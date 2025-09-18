@@ -1,16 +1,39 @@
 using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
-using System.Media;
-using System.Numerics;
-using System.Security.Policy;
-using System.Threading;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.DirectoryServices;
 
 namespace PacmanMovementPrototype2
 {
-
     public partial class Form1 : Form
     {
+        int[,] maze = new int[20, 20] {
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,1,0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,0,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,0,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1} 
+        };
+            
+
+
+
         enum Direction
         {
             None,
@@ -20,13 +43,12 @@ namespace PacmanMovementPrototype2
             Right
         }
 
-        //declaring variables
         Direction currentDirection = Direction.None;
-        int playerSpeed = 5;
+        int playerSpeed = 40;
+        int Speed = 5;
         int Score = 0;
         int Lives = 1;
 
-        //adding in resources
         Label GameText = new Label();
         PictureBox player = new PictureBox();
         PictureBox Enemy = new PictureBox();
@@ -36,27 +58,23 @@ namespace PacmanMovementPrototype2
         {
             InitializeComponent();
 
-            //application window settings
-            this.Width = 800;
-            this.Height = 600;
+            this.Width = 1000;
+            this.Height = 1000;
 
-            //player settings
-            player.Width = 40;
-            player.Height = 40;
+            player.Width = playerSpeed;
+            player.Height = playerSpeed;
             player.BackColor = Color.Yellow;
-            player.Left = 30;
-            player.Top = 30;
+            player.Left = 40;
+            player.Top = 40;
             this.Controls.Add(player);
 
-            //enemy settings
-            Enemy.Width = 40;
-            Enemy.Height = 40;
+            Enemy.Width = playerSpeed;
+            Enemy.Height = playerSpeed;
             Enemy.BackColor = Color.Red;
             Enemy.Left = 300;
             Enemy.Top = 300;
             this.Controls.Add(Enemy);
 
-            //label settings
             GameText.Width = 300;
             GameText.Height = 100;
             GameText.Text = "Game Over";
@@ -69,18 +87,17 @@ namespace PacmanMovementPrototype2
             GameText.Visible = false;
             this.Controls.Add(GameText);
 
-            //end screen settings
             EndScreen.Width = 800;
             EndScreen.Height = 600;
             EndScreen.BackColor = Color.Black;
             EndScreen.Visible = false;
             this.Controls.Add(EndScreen);
 
-            //timer settings
             timer1.Start();
-
             this.KeyDown += Form1_KeyDown;
             this.KeyPreview = true;
+
+            this.DoubleBuffered = true;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -112,7 +129,6 @@ namespace PacmanMovementPrototype2
             player.Visible = false;
             Enemy.Visible = false;
 
-
             await Task.Delay(3000);
             ResetGame();
         }
@@ -123,17 +139,12 @@ namespace PacmanMovementPrototype2
             Score = 0;
             player.Left = 30;
             player.Top = 30;
-
             Enemy.Left = 300;
             Enemy.Top = 300;
-
             EndScreen.Visible = false;
             GameText.Visible = false;
             Enemy.Visible = true;
             player.Visible = true;
-            player.BackColor = Color.Yellow;
-            Enemy.BackColor = Color.Red;
-
             currentDirection = Direction.None;
         }
 
@@ -153,6 +164,46 @@ namespace PacmanMovementPrototype2
                 currentDirection = Direction.None;
             }
         }
+
+        private bool IsCollidingWithWall(int playerX, int playerY)
+        {
+            int gridX = playerX / playerSpeed;
+            int gridY = playerY / playerSpeed;
+
+            if (gridX < 0 || gridX >= maze.GetLength(0) || gridY < 0 || gridY >= maze.GetLength(1))
+                return false;
+
+            return maze[gridY, gridX] == 1;
+        }
+
+        private void MovePlayer()
+        {
+            int newX = player.Left;
+            int newY = player.Top;
+
+            switch (currentDirection)
+            {
+                case Direction.Up:
+                    newY -= Speed;
+                    break;
+                case Direction.Down:
+                    newY += Speed;
+                    break;
+                case Direction.Left:
+                    newX -= Speed;
+                    break;
+                case Direction.Right:
+                    newX += Speed;
+                    break;
+            }
+
+            if (!IsCollidingWithWall(newX, newY))
+            {
+                player.Left = newX;
+                player.Top = newY;
+            }
+        }
+
         private void MoveEnemyTowardsPlayer()
         {
             int enemySpeed = 2;
@@ -169,124 +220,47 @@ namespace PacmanMovementPrototype2
                 else if (Enemy.Left > player.Left)
                 {
                     Enemy.Left -= enemySpeed;
-                    
                 }
             }
             else
             {
                 if (Enemy.Top < player.Top)
                 {
-                    
                     Enemy.Top += enemySpeed;
-                    
                 }
                 else if (Enemy.Top > player.Top)
                 {
-                    
                     Enemy.Top -= enemySpeed;
-                    
                 }
             }
         }
-        /*if (horizontalDistance > verticalDistance)
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            Graphics g = e.Graphics;
+            int cellSize = playerSpeed;
+
+
+            for (int row = 0; row < maze.GetLength(0); row++) 
             {
-                if (Enemy.Left < player.Left)
+                for (int col = 0; col < maze.GetLength(1); col++)
                 {
-                    while (Enemy.Left < player.Left / 2)
+                    if (maze[row, col] == 1)
                     {
-                        Enemy.Left += enemySpeed;
+                        g.FillRectangle(Brushes.Blue, col * cellSize, row * cellSize, cellSize, cellSize);
                     }
-                }
-                else if (Enemy.Left > player.Left)
-                {
-                    while (Enemy.Left > player.Left / 2)
+                    else if (maze[row, col] == 0)
                     {
-                        Enemy.Left -= enemySpeed;
+                        g.FillRectangle(Brushes.Black, col * cellSize, row * cellSize, cellSize, cellSize);
                     }
-                    Enemy.Left -= enemySpeed;
-                    
                 }
             }
-            else
-            {
-                if (Enemy.Top < player.Top)
-                {
-                    while (Enemy.Top < player.Top / 2)
-                    {
-                        Enemy.Top += enemySpeed;
-                    }
-                }
-                else if (Enemy.Top > player.Top)
-                {
-                    
-                    Enemy.Top -= enemySpeed;
-                    
-                }
-            }*/
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Rectangle playerRect = new Rectangle(player.Left, player.Top, player.Width, player.Height);
-            Rectangle enemyRect = new Rectangle(Enemy.Left, Enemy.Top, Enemy.Width, Enemy.Height);
-
+            MovePlayer();
             MoveEnemyTowardsPlayer();
-
-            bool hitsWall = false;
-
-            if (playerRect.IntersectsWith(enemyRect))
-            {
-                Death();
-            }
-
-            if (player.Left < 0)
-            {
-                player.Left = 0;
-                hitsWall = true;
-            }
-
-            if (player.Top < 0)
-            {
-                player.Top = 0;
-                hitsWall = true;
-            }
-
-            if (player.Right > this.ClientSize.Width)
-            {
-                player.Left = this.ClientSize.Width - player.Width;
-                hitsWall = true;
-            }
-
-            if (player.Bottom > this.ClientSize.Height)
-            {
-                player.Top = this.ClientSize.Height - player.Height;
-                hitsWall = true;
-            }
-
-            if (hitsWall == false)
-            {
-                switch (currentDirection)
-                {
-                    case Direction.Left:
-                        player.Left -= playerSpeed;
-                        break;
-                    case Direction.Right:
-                        player.Left += playerSpeed;
-                        break;
-                    case Direction.Up:
-                        player.Top -= playerSpeed;
-                        break;
-                    case Direction.Down:
-                        player.Top += playerSpeed;
-                        break;
-                }
-            }
-            else
-            {
-                currentDirection = Direction.None;
-                hitsWall = false;
-            }
         }
-
     }
 }
-
