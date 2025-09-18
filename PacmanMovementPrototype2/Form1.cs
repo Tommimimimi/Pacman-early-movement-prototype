@@ -188,42 +188,7 @@ namespace PacmanMovementPrototype2
                 }
             }
         }
-        /*if (horizontalDistance > verticalDistance)
-            {
-                if (Enemy.Left < player.Left)
-                {
-                    while (Enemy.Left < player.Left / 2)
-                    {
-                        Enemy.Left += enemySpeed;
-                    }
-                }
-                else if (Enemy.Left > player.Left)
-                {
-                    while (Enemy.Left > player.Left / 2)
-                    {
-                        Enemy.Left -= enemySpeed;
-                    }
-                    Enemy.Left -= enemySpeed;
-                    
-                }
-            }
-            else
-            {
-                if (Enemy.Top < player.Top)
-                {
-                    while (Enemy.Top < player.Top / 2)
-                    {
-                        Enemy.Top += enemySpeed;
-                    }
-                }
-                else if (Enemy.Top > player.Top)
-                {
-                    
-                    Enemy.Top -= enemySpeed;
-                    
-                }
-            }*/
-
+        
         private void timer1_Tick(object sender, EventArgs e)
         {
             Rectangle playerRect = new Rectangle(player.Left, player.Top, player.Width, player.Height);
