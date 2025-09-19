@@ -2,37 +2,32 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-using System.DirectoryServices;
 
 namespace PacmanMovementPrototype2
 {
     public partial class Form1 : Form
     {
         int[,] maze = new int[20, 20] {
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,1,0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,0,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,0,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1} 
-        };
-            
-
-
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
 
         enum Direction
         {
@@ -43,9 +38,10 @@ namespace PacmanMovementPrototype2
             Right
         }
 
-        Direction currentDirection = Direction.None;
-        int playerSpeed = 40;
-        int Speed = 5;
+        Direction currentDirection = Direction.Right;
+        Direction nextDirection = Direction.Right;
+        int gridSize = 40;
+        int Speed = 40;
         int Score = 0;
         int Lives = 1;
 
@@ -61,15 +57,15 @@ namespace PacmanMovementPrototype2
             this.Width = 1000;
             this.Height = 1000;
 
-            player.Width = playerSpeed;
-            player.Height = playerSpeed;
+            player.Width = gridSize;
+            player.Height = gridSize;
             player.BackColor = Color.Yellow;
             player.Left = 40;
             player.Top = 40;
             this.Controls.Add(player);
 
-            Enemy.Width = playerSpeed;
-            Enemy.Height = playerSpeed;
+            Enemy.Width = gridSize;
+            Enemy.Height = gridSize;
             Enemy.BackColor = Color.Red;
             Enemy.Left = 300;
             Enemy.Top = 300;
@@ -107,16 +103,16 @@ namespace PacmanMovementPrototype2
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    currentDirection = Direction.Up;
+                    nextDirection = Direction.Up;
                     break;
                 case Keys.S:
-                    currentDirection = Direction.Down;
+                    nextDirection = Direction.Down;
                     break;
                 case Keys.A:
-                    currentDirection = Direction.Left;
+                    nextDirection = Direction.Left;
                     break;
                 case Keys.D:
-                    currentDirection = Direction.Right;
+                    nextDirection = Direction.Right;
                     break;
             }
         }
@@ -139,13 +135,14 @@ namespace PacmanMovementPrototype2
             Score = 0;
             player.Left = 30;
             player.Top = 30;
-            Enemy.Left = 300;
-            Enemy.Top = 300;
+            Enemy.Left = 400;
+            Enemy.Top = 400;
             EndScreen.Visible = false;
             GameText.Visible = false;
             Enemy.Visible = true;
             player.Visible = true;
             currentDirection = Direction.None;
+            nextDirection = Direction.None;
         }
 
         private void Death()
@@ -157,27 +154,73 @@ namespace PacmanMovementPrototype2
             }
             else
             {
-                player.Left = 30;
-                player.Top = 30;
-                Enemy.Left = 300;
-                Enemy.Top = 300;
+                player.Left = 40;
+                player.Top = 40;
+                Enemy.Left = 400;
+                Enemy.Top = 400;
                 currentDirection = Direction.None;
+                nextDirection = Direction.None;
             }
         }
 
         private bool IsCollidingWithWall(int playerX, int playerY)
         {
-            int gridX = playerX / playerSpeed;
-            int gridY = playerY / playerSpeed;
+            Rectangle rect = new Rectangle(playerX, playerY, player.Width, player.Height);
+            Point[] corners = new Point[]
+            {
+                new Point(rect.Left, rect.Top),
+                new Point(rect.Right - 1, rect.Top),
+                new Point(rect.Left, rect.Bottom - 1),
+                new Point(rect.Right - 1, rect.Bottom - 1)
+            };
 
-            if (gridX < 0 || gridX >= maze.GetLength(0) || gridY < 0 || gridY >= maze.GetLength(1))
-                return false;
+            foreach (var corner in corners)
+            {
+                int gridX = corner.X / gridSize;
+                int gridY = corner.Y / gridSize;
 
-            return maze[gridY, gridX] == 1;
+                if (gridX < 0
+                    || gridX >= maze.GetLength(1)
+                    || gridY < 0
+                    || gridY >= maze.GetLength(0))
+                    return true;
+
+                if (maze[gridY, gridX] == 1)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool CenterCheck(int hori, int vert)
+        {
+            return (hori % gridSize == 0) && (vert % gridSize == 0);
         }
 
         private void MovePlayer()
         {
+            int centerX = player.Left + player.Width / 2;
+            int centerY = player.Top + player.Height / 2;
+
+            if (CenterCheck(player.Left, player.Top))
+            {
+                int tryX = player.Left;
+                int tryY = player.Top;
+
+                switch (nextDirection)
+                {
+                    case Direction.Up: tryY -= Speed; break;
+                    case Direction.Down: tryY += Speed; break;
+                    case Direction.Left: tryX -= Speed; break;
+                    case Direction.Right: tryX += Speed; break;
+                }
+
+                if (!IsCollidingWithWall(tryX, tryY))
+                {
+                    currentDirection = nextDirection;
+                }
+            }
+
             int newX = player.Left;
             int newY = player.Top;
 
@@ -206,42 +249,46 @@ namespace PacmanMovementPrototype2
 
         private void MoveEnemyTowardsPlayer()
         {
-            int enemySpeed = 2;
+            int enemySpeed = 30; 
 
-            int horizontalDistance = Math.Abs(Enemy.Left - player.Left);
-            int verticalDistance = Math.Abs(Enemy.Top - player.Top);
-
-            if (horizontalDistance > verticalDistance)
+            
+            if (Enemy.Left < player.Left)
             {
-                if (Enemy.Left < player.Left)
-                {
-                    Enemy.Left += enemySpeed;
-                }
-                else if (Enemy.Left > player.Left)
-                {
-                    Enemy.Left -= enemySpeed;
-                }
+                int tryX = Enemy.Left + enemySpeed;
+                if (!IsCollidingWithWall(tryX, Enemy.Top))
+                    Enemy.Left = tryX;
             }
-            else
+            else if (Enemy.Left > player.Left)
             {
-                if (Enemy.Top < player.Top)
-                {
-                    Enemy.Top += enemySpeed;
-                }
-                else if (Enemy.Top > player.Top)
-                {
-                    Enemy.Top -= enemySpeed;
-                }
+                int tryX = Enemy.Left - enemySpeed;
+                if (!IsCollidingWithWall(tryX, Enemy.Top))
+                    Enemy.Left = tryX;
+            }
+
+            
+            if (Enemy.Top < player.Top)
+            {
+                int tryY = Enemy.Top + enemySpeed;
+                if (!IsCollidingWithWall(Enemy.Left, tryY))
+                    Enemy.Top = tryY;
+            }
+            else if (Enemy.Top > player.Top)
+            {
+                int tryY = Enemy.Top - enemySpeed;
+                if (!IsCollidingWithWall(Enemy.Left, tryY))
+                    Enemy.Top = tryY;
             }
         }
+
+
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             Graphics g = e.Graphics;
-            int cellSize = playerSpeed;
+            int cellSize = gridSize;
 
-
-            for (int row = 0; row < maze.GetLength(0); row++) 
+            for (int row = 0; row < maze.GetLength(0); row++)
             {
                 for (int col = 0; col < maze.GetLength(1); col++)
                 {
